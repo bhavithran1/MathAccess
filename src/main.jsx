@@ -1,18 +1,12 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
-  ArrowRight,
   Atom,
-  BrainCircuit,
   CalendarCheck,
   ChevronRight,
   Gauge,
-  GraduationCap,
-  Handshake,
-  Network,
   Orbit,
-  Sparkles,
-  Users
+  Sparkles
 } from "lucide-react";
 import { BlackHoleScene } from "./BlackHoleScene.jsx";
 import { homeStats, orgEvents, programs } from "./data.js";
@@ -104,41 +98,22 @@ function RouteLink({ to, className, children, onNavigate, ariaLabel }) {
   );
 }
 
-function ButtonLink({ to, href, children, icon: Icon = ArrowRight, tone = "default", onNavigate }) {
-  const content = (
-    <>
-      <span>{children}</span>
-      <Icon size={17} strokeWidth={2.2} aria-hidden="true" />
-    </>
-  );
-
+function ButtonLink({ to, href, children, tone = "default", onNavigate }) {
   if (href) {
-    return <a className={`button ${tone}`} href={href}>{content}</a>;
+    return <a className={`button ${tone}`} href={href}>{children}</a>;
   }
 
   return (
     <RouteLink className={`button ${tone}`} to={to} onNavigate={onNavigate}>
-      {content}
+      {children}
     </RouteLink>
   );
 }
 
 function Header({ route, onNavigate }) {
-  const activeProgram = programs.find((p) => p.route === route);
-
   return (
     <header className="site-header">
       <div className="container nav-inner">
-        <RouteLink className="brand" to="/" onNavigate={onNavigate} ariaLabel="MathAccess home">
-          <span className="brand-mark">MA</span>
-          <span className="brand-copy">
-            <span className="brand-name">{activeProgram ? activeProgram.title : "MathAccess"}</span>
-            <span className="brand-subtitle">
-              {activeProgram ? activeProgram.label : "Malaysia math opportunity network"}
-            </span>
-          </span>
-        </RouteLink>
-
         <nav className="nav-links" aria-label="Main navigation">
           <RouteLink to="/" onNavigate={onNavigate} className={route === "/" ? "active" : ""}>
             Home
@@ -208,13 +183,13 @@ function HomePage({ onNavigate }) {
               A Malaysia-wide education organization where olympiad thinking, AI research, mathematical games, conjecture discovery, and quantum computing become reachable for students regardless of school, income, language, or geography.
             </p>
             <div className="hero-actions">
-              <ButtonLink href="#volunteer" tone="primary" icon={Handshake}>
+              <ButtonLink href="#volunteer" tone="primary">
                 Join as volunteer
               </ButtonLink>
-              <ButtonLink href="#apply" tone="green" icon={GraduationCap}>
+              <ButtonLink href="#apply" tone="green">
                 Apply for events
               </ButtonLink>
-              <ButtonLink href="#programs" icon={Network}>
+              <ButtonLink href="#programs">
                 Explore programs
               </ButtonLink>
             </div>
@@ -309,7 +284,6 @@ function HomePage({ onNavigate }) {
         body="MathAccess needs mentors for hackathon teams, olympiad problem review, game-world lesson design, quantum question writing, logistics, translation, and school outreach."
         action="Volunteer interest"
         placeholder="Volunteer form placeholder"
-        icon={Users}
       />
 
       <ApplyBand
@@ -319,7 +293,6 @@ function HomePage({ onNavigate }) {
         body="Students can join through school nominations, open applications, or partner programs. The first intake can collect school, state, interests, and accessibility needs."
         action="Apply for a program"
         placeholder="Application link placeholder"
-        icon={GraduationCap}
         alternate
       />
     </>
@@ -355,13 +328,13 @@ function FeaturePage({ program, onNavigate }) {
               <h1>{program.hero}</h1>
               <p className="hero-lede">{program.lede}</p>
               <div className="hero-actions">
-                <ButtonLink href="#apply" tone="primary" icon={GraduationCap}>
+                <ButtonLink href="#apply" tone="primary">
                   Apply
                 </ButtonLink>
-                <ButtonLink href="#volunteer" tone="green" icon={Handshake}>
+                <ButtonLink href="#volunteer" tone="green">
                   Volunteer
                 </ButtonLink>
-                <ButtonLink to="/" onNavigate={onNavigate} icon={ArrowRight}>
+                <ButtonLink to="/" onNavigate={onNavigate}>
                   Main site
                 </ButtonLink>
               </div>
@@ -433,7 +406,6 @@ function FeaturePage({ program, onNavigate }) {
         body={program.applyBody}
         action="Application placeholder"
         placeholder={`${program.shortTitle} intake placeholder`}
-        icon={GraduationCap}
         alternate
       />
 
@@ -444,13 +416,12 @@ function FeaturePage({ program, onNavigate }) {
         body="Mentors, teachers, engineers, designers, university students, olympiad alumni, and logistics volunteers can all contribute."
         action="Volunteer placeholder"
         placeholder={`${program.shortTitle} volunteer form placeholder`}
-        icon={Handshake}
       />
     </>
   );
 }
 
-function ApplyBand({ id, kicker, title, body, action, placeholder, icon: Icon, alternate = false }) {
+function ApplyBand({ id, kicker, title, body, action, placeholder, alternate = false }) {
   return (
     <section className={`section ${alternate ? "alt" : ""}`} id={id}>
       <div className="container">
@@ -461,8 +432,7 @@ function ApplyBand({ id, kicker, title, body, action, placeholder, icon: Icon, a
               <h2>{title}</h2>
               <p>{body}</p>
               <a className="button primary" href={`#${id}-placeholder`}>
-                <span>{action}</span>
-                <Icon size={17} strokeWidth={2.2} aria-hidden="true" />
+                {action}
               </a>
             </div>
             <div className="placeholder-box" id={`${id}-placeholder`}>
