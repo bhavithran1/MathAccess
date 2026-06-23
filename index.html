@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+      name="description"
+      content="MathAccess is a Malaysian education organization making advanced mathematics, olympiads, AI labs, and quantum computing reachable for students from every background."
+    >
+    <title>MathAccess | Mathematics For Every Malaysian Student</title>
+    <script>
+      (function () {
+        var redirect = sessionStorage.redirect;
+        delete sessionStorage.redirect;
+
+        if (redirect && redirect !== location.href) {
+          history.replaceState(null, null, redirect);
+        }
+
+        if (location.search.indexOf("?/") === 0) {
+          var decoded = location.search
+            .slice(2)
+            .replace(/~and~/g, "&");
+          var parts = decoded.split("&");
+          var path = parts.shift() || "";
+          var query = parts.length ? "?" + parts.join("&") : "";
+          var base = location.pathname.endsWith("/") ? location.pathname : location.pathname + "/";
+
+          history.replaceState(null, null, base + path + query + location.hash);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
