@@ -268,6 +268,109 @@ export const homeStats = [
   ["Status", "Launching", "Applications and partner details are placeholders."]
 ];
 
+export const learningResources = [
+  {
+    title: "Khan Academy Maths",
+    type: "Start here",
+    level: "Foundation → SPM",
+    time: "20–40 min lessons",
+    description: "Clear videos and practice for rebuilding confidence in algebra, geometry, probability, and calculus at your own pace.",
+    href: "https://www.khanacademy.org/math",
+    tone: "cyan"
+  },
+  {
+    title: "NRICH problem collections",
+    type: "SPM & school",
+    level: "Lower secondary → pre-U",
+    time: "One good problem",
+    description: "Rich, low-barrier problems that reward drawing, experimenting, explaining, and sticking with an idea.",
+    href: "https://nrich.maths.org/",
+    tone: "green"
+  },
+  {
+    title: "Art of Problem Solving",
+    type: "Olympiad",
+    level: "Ready for a stretch",
+    time: "45–90 min deep dive",
+    description: "A large community and problem archive for students who want to grow from contest basics to serious problem solving.",
+    href: "https://artofproblemsolving.com/",
+    tone: "amber"
+  },
+  {
+    title: "Desmos graphing calculator",
+    type: "Build & explore",
+    level: "Any curious learner",
+    time: "10 min experiment",
+    description: "See functions move. Change a slider, make a conjecture, and test what changes or stays beautifully fixed.",
+    href: "https://www.desmos.com/calculator",
+    tone: "violet"
+  },
+  {
+    title: "GeoGebra exploration lab",
+    type: "Build & explore",
+    level: "Form 1 → pre-U",
+    time: "20 min exploration",
+    description: "Construct shapes, transformations, graphs, and data visualisations before trying to prove what you notice.",
+    href: "https://www.geogebra.org/",
+    tone: "red"
+  },
+  {
+    title: "Your KSSM textbook, differently",
+    type: "SPM & school",
+    level: "Form 1–5",
+    time: "25 min routine",
+    description: "Choose one worked example, hide the solution, redo it slowly, then explain every line aloud in your own words.",
+    href: "#starter-path",
+    tone: "green"
+  }
+];
+
+export const dailyChallenges = [
+  {
+    strand: "Number sense / 5 min",
+    prompt: "Without calculating every value, which is larger: 2⁵⁰ or 3³⁰?",
+    nudge: "Try rewriting both numbers using the same exponent.",
+    solution: "2⁵⁰ = (2⁵)¹⁰ = 32¹⁰, while 3³⁰ = (3³)¹⁰ = 27¹⁰. Because 32 > 27, 2⁵⁰ is larger."
+  },
+  {
+    strand: "Patterns / 5 min",
+    prompt: "A square is cut by one diagonal. How many lines of symmetry does the resulting triangle have?",
+    nudge: "Name the kind of triangle formed by a diagonal of a square.",
+    solution: "The diagonal creates an isosceles right triangle. It has exactly one line of symmetry: the line from the right-angle vertex to the midpoint of the hypotenuse."
+  },
+  {
+    strand: "Probability / 5 min",
+    prompt: "You toss two fair coins. Is getting exactly one head more likely, less likely, or equally likely as getting two heads?",
+    nudge: "List all equally likely outcomes.",
+    solution: "Exactly one head happens in HT or TH: 2 outcomes. Two heads happens only in HH: 1 outcome. So exactly one head is twice as likely."
+  },
+  {
+    strand: "Algebra / 5 min",
+    prompt: "If x + 1/x = 5, what is x² + 1/x²?",
+    nudge: "Square the expression you already know.",
+    solution: "(x + 1/x)² = x² + 2 + 1/x². So 25 = x² + 2 + 1/x², giving x² + 1/x² = 23."
+  }
+];
+
+export const mathFacts = [
+  {
+    fact: "The 14 points of the star on the Jalur Gemilang encode unity: the 13 states and the Federal Government.",
+    note: "Mathematics is often hiding in visual design—counting, symmetry, and meaning can all live in one symbol."
+  },
+  {
+    fact: "The number 1729 is the smallest number expressible as a sum of two positive cubes in two different ways: 1³ + 12³ and 9³ + 10³.",
+    note: "It is famous from a story about Srinivasa Ramanujan and G. H. Hardy."
+  },
+  {
+    fact: "A standard deck has 52 cards, but eight perfect out-shuffles return the cards to their original order.",
+    note: "That surprising fact is a doorway into permutations and group theory."
+  },
+  {
+    fact: "A sheet of paper folded 42 times would, in theory, be thick enough to reach the Moon.",
+    note: "The lesson is exponential growth: doubling becomes enormous much faster than intuition expects."
+  }
+];
+
 export const orgEvents = [
   ["Hack Circuit", "Regional high-school hackathons where teams turn mathematical ideas into prototypes, dashboards, games, and explainers."],
   ["Problem Engine Demo Day", "Students and mentors test AI-generated olympiad problems and discuss what makes a problem elegant."],

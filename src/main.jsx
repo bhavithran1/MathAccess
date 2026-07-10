@@ -2,14 +2,20 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   Atom,
+  BookOpen,
   CalendarCheck,
   ChevronRight,
+  Compass,
+  ExternalLink,
   Gauge,
+  Lightbulb,
   Orbit,
+  RotateCw,
+  Search,
   Sparkles
 } from "lucide-react";
 import { BlackHoleScene } from "./BlackHoleScene.jsx";
-import { homeStats, orgEvents, programs } from "./data.js";
+import { dailyChallenges, homeStats, learningResources, mathFacts, orgEvents, programs } from "./data.js";
 import "./styles.css";
 
 const icons = {
@@ -172,6 +178,33 @@ function ProgramIcon({ program }) {
 }
 
 function HomePage({ onNavigate }) {
+  const [resourceFilter, setResourceFilter] = useState("All");
+  const [resourceQuery, setResourceQuery] = useState("");
+  const [challengeIndex, setChallengeIndex] = useState(() => new Date().getDate() % dailyChallenges.length);
+  const [showSolution, setShowSolution] = useState(false);
+  const [factIndex, setFactIndex] = useState(() => new Date().getDate() % mathFacts.length);
+
+  const filteredResources = useMemo(() => {
+    const query = resourceQuery.trim().toLowerCase();
+    return learningResources.filter((resource) => {
+      const matchesFilter = resourceFilter === "All" || resource.type === resourceFilter;
+      const matchesQuery = !query || [resource.title, resource.type, resource.level, resource.description]
+        .join(" ")
+        .toLowerCase()
+        .includes(query);
+      return matchesFilter && matchesQuery;
+    });
+  }, [resourceFilter, resourceQuery]);
+
+  const changeChallenge = () => {
+    setChallengeIndex((index) => (index + 1) % dailyChallenges.length);
+    setShowSolution(false);
+  };
+
+  const changeFact = () => setFactIndex((index) => (index + 1) % mathFacts.length);
+  const challenge = dailyChallenges[challengeIndex];
+  const fact = mathFacts[factIndex];
+
   return (
     <>
       <section className="hero home-hero">
@@ -180,17 +213,17 @@ function HomePage({ onNavigate }) {
             <p className="eyebrow">Advanced mathematics, made reachable</p>
             <h1>MathAccess</h1>
             <p className="hero-lede">
-              A Malaysia-wide education organization where olympiad thinking, AI research, mathematical games, conjecture discovery, and quantum computing become reachable for students regardless of school, income, language, or geography.
+              Your friendly basecamp for becoming more curious, confident, and capable with mathematics—whether you are catching up for SPM, chasing olympiad problems, or building the next big idea.
             </p>
             <div className="hero-actions">
-              <ButtonLink href="#volunteer" tone="primary">
-                Join as volunteer
+              <ButtonLink href="#starter-path" tone="primary">
+                Start here
               </ButtonLink>
-              <ButtonLink href="#apply" tone="green">
-                Apply for events
+              <ButtonLink href="#resources" tone="green">
+                Find a resource
               </ButtonLink>
               <ButtonLink href="#programs">
-                Explore programs
+                Explore opportunities
               </ButtonLink>
             </div>
           </div>
@@ -200,8 +233,8 @@ function HomePage({ onNavigate }) {
               <span>MA ACCESS INDEX</span>
               <span>LIVE</span>
             </div>
-            <div className="console-number">05</div>
-            <p>separate program sites connected by one access mission</p>
+            <div className="console-number">01</div>
+            <p>small step today: learn a little, try a little, explain a little</p>
             <div className="console-bars" aria-hidden="true">
               <span></span>
               <span></span>
@@ -215,13 +248,148 @@ function HomePage({ onNavigate }) {
 
       <Ticker />
 
+      <section className="section starter-section" id="starter-path">
+        <div className="container">
+          <Reveal>
+            <SectionHeader
+              kicker="Start where you are"
+              title="No secret maths gene required. Just a next step."
+              body="Pick the route that feels most like you today. Each one is built to be kind, concrete, and easy to start after school."
+            />
+          </Reveal>
+          <div className="starter-grid">
+            <Reveal delay={1}>
+              <article className="starter-card">
+                <span className="starter-icon green"><BookOpen size={22} aria-hidden="true" /></span>
+                <span className="card-code">01 / REBUILD</span>
+                <h3>I want to feel less lost in class.</h3>
+                <p>Use your textbook plus one short lesson. Redo a worked example without looking, then explain why each step works.</p>
+                <a href="#resources" onClick={() => setResourceFilter("Start here")}>Find foundation resources <ChevronRight size={16} aria-hidden="true" /></a>
+              </article>
+            </Reveal>
+            <Reveal delay={2}>
+              <article className="starter-card">
+                <span className="starter-icon cyan"><Compass size={22} aria-hidden="true" /></span>
+                <span className="card-code">02 / EXPLORE</span>
+                <h3>I like maths, but I want it to feel bigger.</h3>
+                <p>Try one rich problem each week. Draw it, guess a rule, test a few cases, then write what you have noticed.</p>
+                <a href="#resources" onClick={() => setResourceFilter("SPM & school")}>Find a first challenge <ChevronRight size={16} aria-hidden="true" /></a>
+              </article>
+            </Reveal>
+            <Reveal delay={3}>
+              <article className="starter-card">
+                <span className="starter-icon amber"><Lightbulb size={22} aria-hidden="true" /></span>
+                <span className="card-code">03 / STRETCH</span>
+                <h3>I am ready for difficult problems.</h3>
+                <p>Spend longer on fewer questions. Keep a “mistake museum” so every stuck moment becomes a useful strategy later.</p>
+                <a href="#resources" onClick={() => setResourceFilter("Olympiad")}>Find olympiad practice <ChevronRight size={16} aria-hidden="true" /></a>
+              </article>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      <section className="section alt" id="challenge">
+        <div className="container discovery-grid">
+          <Reveal className="reveal-left">
+            <article className="challenge-card">
+              <div className="challenge-topline">
+                <span><Sparkles size={15} aria-hidden="true" /> DAILY BRAIN SPARK</span>
+                <button className="icon-button" type="button" onClick={changeChallenge} aria-label="Show a different challenge">
+                  <RotateCw size={17} aria-hidden="true" />
+                </button>
+              </div>
+              <span className="challenge-strand">{challenge.strand}</span>
+              <h2>{challenge.prompt}</h2>
+              <p className="challenge-nudge">Try this: {challenge.nudge}</p>
+              {showSolution && <p className="challenge-solution">{challenge.solution}</p>}
+              <button className="button primary" type="button" onClick={() => setShowSolution((visible) => !visible)}>
+                {showSolution ? "Hide answer" : "Reveal the idea"}
+              </button>
+            </article>
+          </Reveal>
+          <Reveal className="reveal-right">
+            <article className="fact-card">
+              <div className="challenge-topline">
+                <span><Lightbulb size={15} aria-hidden="true" /> MATHS IS EVERYWHERE</span>
+                <button className="icon-button" type="button" onClick={changeFact} aria-label="Show another fun fact">
+                  <RotateCw size={17} aria-hidden="true" />
+                </button>
+              </div>
+              <p className="fact-main">“{fact.fact}”</p>
+              <p>{fact.note}</p>
+              <span className="fact-count">FACT {String(factIndex + 1).padStart(2, "0")} / {String(mathFacts.length).padStart(2, "0")}</span>
+            </article>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="section" id="resources">
+        <div className="container">
+          <Reveal>
+            <SectionHeader
+              kicker="Maths basecamp"
+              title="Good places to learn, practise, and play."
+              body="Start with one resource—not ten open tabs. These picks help you learn at your own level, from building SPM confidence to experimenting with deeper ideas."
+            />
+          </Reveal>
+          <Reveal>
+            <div className="resource-controls">
+              <label className="resource-search">
+                <Search size={18} aria-hidden="true" />
+                <span className="sr-only">Search learning resources</span>
+                <input
+                  type="search"
+                  value={resourceQuery}
+                  onChange={(event) => setResourceQuery(event.target.value)}
+                  placeholder="Search algebra, graphs, olympiad..."
+                />
+              </label>
+              <div className="resource-filters" aria-label="Filter resources">
+                {["All", "Start here", "SPM & school", "Olympiad", "Build & explore"].map((filter) => (
+                  <button
+                    className={resourceFilter === filter ? "selected" : ""}
+                    key={filter}
+                    type="button"
+                    onClick={() => setResourceFilter(filter)}
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+          <div className="resource-grid" aria-live="polite">
+            {filteredResources.map((resource, index) => (
+              <Reveal key={resource.title} delay={Math.min((index % 3) + 1, 3)}>
+                <a className={`resource-card ${resource.tone}`} href={resource.href} target={resource.href.startsWith("http") ? "_blank" : undefined} rel={resource.href.startsWith("http") ? "noreferrer" : undefined}>
+                  <div className="resource-meta">
+                    <span>{resource.type}</span>
+                    <ExternalLink size={15} aria-hidden="true" />
+                  </div>
+                  <h3>{resource.title}</h3>
+                  <p>{resource.description}</p>
+                  <div className="resource-foot">
+                    <span>{resource.level}</span>
+                    <span>{resource.time}</span>
+                  </div>
+                </a>
+              </Reveal>
+            ))}
+          </div>
+          {filteredResources.length === 0 && (
+            <p className="empty-resources">No match yet. Try “graphs”, “school”, “problem”, or clear the filters.</p>
+          )}
+        </div>
+      </section>
+
       <section className="section" id="programs">
         <div className="container">
           <Reveal>
             <SectionHeader
               kicker="Program map"
               title="Five ways students enter deep mathematics."
-              body="Each program is now a React route with its own page, story, application placeholder, and public-facing structure."
+              body="When you are ready to go beyond solo practice, these are places to build, discover, play, and meet people who love difficult questions too."
             />
           </Reveal>
           <div className="program-grid">
